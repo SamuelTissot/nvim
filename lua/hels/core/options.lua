@@ -32,6 +32,9 @@ vim.opt.smartcase = true
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 
+-- search and replace
+vim.opt.inccommand="nosplit"
+
 -- Keep signcolumn on by default
 vim.opt.signcolumn = "yes"
 
