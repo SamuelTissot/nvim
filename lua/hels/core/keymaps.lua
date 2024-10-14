@@ -8,6 +8,7 @@ M.keymapsGroup = function()
 		{ "<leader>f", group = "[f]ile" }, -- group
 		{ "<leader>s", group = "[s]each" },
 		{ "<leader>t", group = "[t]est" },
+		{ "<leader>o", group = "[o]perations" },
     {"leader>x", group = "[x] diagnostics"},
     {"leader>u", group = "[u]ser"},
     {"leader>n", group = "[n]otes"},
@@ -63,6 +64,12 @@ M.setTelescopeKeys = function ()
       vim.keymap.set('n', '<leader>uw', function()
         require('telescope').extensions.git_worktree.git_worktrees()
       end, { desc = '[U]ser [W]orktree' })
+end
+
+M.toggleTermKeys = function()
+    return {
+    {'<leader>ot', function() vim.cmd(vim.v.count1 .. 'ToggleTerm direction=horizontal') end, {desc = '[o]perate [t]erminal'}},
+  }
 end
 
 M.undotreeKeys = function ()

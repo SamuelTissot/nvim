@@ -1,5 +1,5 @@
 return {
   'mbbill/undotree',
-  opts = {},
+  lazy = false,
   keys = require("hels.core.keymaps").undotreeKeys(),
 }
