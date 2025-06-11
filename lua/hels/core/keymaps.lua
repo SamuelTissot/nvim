@@ -1,81 +1,110 @@
+---- CORE REMAPS
+vim.keymap.set("x", "<leader>p", "\"_dP", { noremap = true, silent = true, desc= "past without replacing value" })
+
+
+
 -- Module to export function to be required in plugins
 -- This is done to keep all keymaps at the same place
 local M = {}
 
 M.keymapsGroup = function()
-	print("setting up keys")
 	return {
+		{ "<leader>a", group = "[a]i" }, -- group
 		{ "<leader>f", group = "[f]ile" }, -- group
+		{ "<leader>c", group = "[c]ode" }, -- group
 		{ "<leader>s", group = "[s]each" },
 		{ "<leader>t", group = "[t]est" },
 		{ "<leader>o", group = "[o]perations" },
-    {"leader>x", group = "[x] diagnostics"},
-    {"leader>u", group = "[u]ser"},
-    {"leader>n", group = "[n]otes"},
+		{ "<leader>x", group = "[x] diagnostics" },
+		{ "<leader>u", group = "[u]ser" },
+		{ "<leader>n", group = "[n]otec" },
+		{ "<leader>g", group = "[g]it" },
+		{ "<leader>r", group = "[r]equest" },
 	}
 end
 
+M.copilotChatKeys = function()
+	vim.keymap.set("n", "<leader>ac", "<cmd>CopilotChatToggle<CR>", { desc = "[C]hat" })
+	vim.keymap.set("n", "<leader>ax", "<cmd>CopilotChatStop<CR>", { desc = "Stop" })
+	vim.keymap.set("n", "<leader>ar", "<cmd>CopilotChatReset<CR>", { desc = "[r]eset" })
+	vim.keymap.set("n", "<leader>ap", "<cmd>CopilotChatPrompts<CR>", { desc = "[p]rompts" })
+	vim.keymap.set("n", "<leader>am", "<cmd>CopilotChatModels<CR>", { desc = "[m]odels" })
 
-M.setTelescopeKeys = function ()
-  
-      local builtin = require 'telescope.builtin'
-      local utils = require 'telescope.utils'
-      -- SEARCH
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[s]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[s]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sb', builtin.builtin, { desc = '[s]earch [B]uiltin' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[s]earch [R]esume' })
-      vim.keymap.set('n', '<leader>sg', builtin.grep_string, { desc = '[s]earch [g]rep' })
-      vim.keymap.set('n', '<leader>sG', builtin.live_grep, { desc = '[s]earch project [G]rep' })
-      vim.keymap.set('n', '<leader>sd', function()
-        builtin.find_files { cwd = utils.buffer_dir() }
-      end, { desc = '[s]earch [D]irectory' })
-      -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>s/', function()
-        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
-      end, { desc = '[s]earch [/] Fuzzily search in current buffer' })
-      -- It's also possible to pass additional configuration options.
-      --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>sF', function()
-        builtin.live_grep {
-          grep_open_files = true,
-          prompt_title = 'Search Grep Open Files',
-        }
-      end, { desc = '[s]earch grep open [F]ile' })
-      -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sC', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[s]earch [C]onfig' })
+	vim.keymap.set("i", "<M-|>", 'copilot#Accept("\\<CR>")', {
+		expr = true,
+		replace_keycodes = false,
+	})
+	vim.g.copilot_no_tab_map = true
+end
 
-      -- File
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[f]ile [F]iles' })
-      vim.keymap.set('n', '<leader>fv', builtin.git_files, { desc = '[f]ile [v]ersion controled' })
-      vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = '[f]ile [r]ecent' })
-      vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = '[f]ile buffers' })
+M.setTelescopeKeys = function()
+	local builtin = require("telescope.builtin")
+	local utils = require("telescope.utils")
+	-- SEARCH
+	vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[s]earch [H]elp" })
+	vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[s]earch [K]eymaps" })
+	vim.keymap.set("n", "<leader>sb", builtin.builtin, { desc = "[s]earch [B]uiltin" })
+	vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[s]earch [R]esume" })
+	vim.keymap.set("n", "<leader>sg", builtin.grep_string, { desc = "[s]earch [g]rep" })
+	vim.keymap.set("n", "<leader>sG", builtin.live_grep, { desc = "[s]earch project [G]rep" })
+	vim.keymap.set("n", "<leader>sd", function()
+		builtin.find_files({ cwd = utils.buffer_dir() })
+	end, { desc = "[s]earch [D]irectory" })
+	-- Slightly advanced example of overriding default behavior and theme
+	vim.keymap.set("n", "<leader>s/", function()
+		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+			winblend = 10,
+			previewer = false,
+		}))
+	end, { desc = "[s]earch [/] Fuzzily search in current buffer" })
+	-- It's also possible to pass additional configuration options.
+	--  See `:help telescope.builtin.live_grep()` for information about particular keys
+	vim.keymap.set("n", "<leader>sF", function()
+		builtin.live_grep({
+			grep_open_files = true,
+			prompt_title = "Search Grep Open Files",
+		})
+	end, { desc = "[s]earch grep open [F]ile" })
+	-- Shortcut for searching your Neovim configuration files
+	vim.keymap.set("n", "<leader>sC", function()
+		builtin.find_files({ cwd = vim.fn.stdpath("config") })
+	end, { desc = "[s]earch [C]onfig" })
 
-      -- Diagnostic
-      vim.keymap.set('n', '<leader>xx', builtin.diagnostics, { desc = '[x] diagnostics' })
+	-- File
+	vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[f]ile [F]iles" })
+	vim.keymap.set("n", "<leader>fv", builtin.git_files, { desc = "[f]ile [v]ersion controled" })
+	vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "[f]ile [r]ecent" })
+	vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[f]ile buffers" })
 
-      -- USER
-      vim.keymap.set('n', '<leader>uw', function()
-        require('telescope').extensions.git_worktree.git_worktrees()
-      end, { desc = '[U]ser [W]orktree' })
+	-- Diagnostic
+	vim.keymap.set("n", "<leader>xx", builtin.diagnostics, { desc = "[x] diagnostics" })
+
+	-- Operation
+	vim.keymap.set("n", "<leader>ow", function()
+		require("telescope").extensions.git_worktree.git_worktrees()
+	end, { desc = "[o]perations [w]orktree" })
+	vim.keymap.set("n", "<leader>oW", function()
+		require("telescope").extensions.git_worktree.create_git_worktree()
+	end, { desc = "[o]operation [W]orktree (new)" })
 end
 
 M.toggleTermKeys = function()
-    return {
-    {'<leader>ot', function() vim.cmd(vim.v.count1 .. 'ToggleTerm direction=horizontal') end, {desc = '[o]perate [t]erminal'}},
-  }
+	return {
+		{
+			"<leader>ot",
+			function()
+				vim.cmd(vim.v.count1 .. "ToggleTerm direction=horizontal")
+			end,
+			{ desc = "[o]perate [t]erminal" },
+		},
+	}
 end
 
-M.undotreeKeys = function ()
-  return {
-    {'<leader>u', vim.cmd.UndotreeToggle, {desc = "[u]ndotreeToggle"}},
-  }
+M.undotreeKeys = function()
+	return {
+		{ "<leader>u", vim.cmd.UndotreeToggle, { desc = "[u]ndotreeToggle" } },
+	}
 end
 
 M.basicKeymaps = function()
@@ -121,13 +150,13 @@ end
 M.hurlKeys = function()
 	return {
 		-- Run API request
-		{ "<leader>A", "<cmd>HurlRunner<CR>", desc = "Run All requests" },
-		{ "<leader>a", "<cmd>HurlRunnerAt<CR>", desc = "Run Api request" },
-		{ "<leader>te", "<cmd>HurlRunnerToEntry<CR>", desc = "Run Api request to entry" },
-		{ "<leader>tm", "<cmd>HurlToggleMode<CR>", desc = "Hurl Toggle Mode" },
-		{ "<leader>tv", "<cmd>HurlVerbose<CR>", desc = "Run Api in verbose mode" },
+		{ "<leader>rA", "<cmd>HurlRunner<CR>", desc = "Run All requests" },
+		{ "<leader>ra", "<cmd>HurlRunnerAt<CR>", desc = "Run Api request" },
+		{ "<leader>re", "<cmd>HurlRunnerToEntry<CR>", desc = "Run Api request to entry" },
+		{ "<leader>rt", "<cmd>HurlToggleMode<CR>", desc = "Hurl Toggle Mode" },
+		{ "<leader>rv", "<cmd>HurlVerbose<CR>", desc = "Run Api in verbose mode" },
 		-- Run Hurl request in visual mode
-		{ "<leader>h", ":HurlRunner<CR>", desc = "Hurl Runner", mode = "v" },
+		{ "<leader>rh", ":HurlRunner<CR>", desc = "Hurl Runner", mode = "v" },
 	}
 end
 
@@ -177,7 +206,7 @@ M.LspKeys = function(event)
 
 	-- Opens a popup that displays documentation about the word under your cursor
 	--  See `:help K` for why this keymap.
-	map("<C-K>", vim.lsp.buf.hover, "Hover Documentation")
+	map("<C-d>", vim.lsp.buf.hover, "Hover Documentation")
 
 	-- WARN: This is not Goto Definition, this is Goto Declaration.
 	--  For example, in C this would take you to the header.
@@ -215,7 +244,7 @@ M.neoTestKeys = function()
 		{
 			"<leader>tf",
 			function()
-				require("neotest").run.run(vim.fn.expend("%"))
+				require("neotest").run.run(vim.fn.expand("%"))
 			end,
 			desc = "[t]est [f]ile",
 			mode = { "n" },
@@ -231,32 +260,31 @@ M.neoTestKeys = function()
 	}
 end
 
-
-M.obsidianKeys = function ()
- return {
-    {
-      "<leader>na",
-      function()
-        return require("obsidian").util.smart_action()
-      end,
-      mode = { "n" },
-      desc = "[N]ote [A]ction, either follow link or toggle checkbox",
-    },
-    {
-      "<leader>nc",
-      "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
-      desc = "Obsidian Check Checkbox",
-      mode = "n",
-    },
-    { "<leader>nd", mode = "n", "<cmd>ObsidianDailies<CR>", desc = "Obsidian Dailies" },
-    { "<leader>nt", mode = "n", "<cmd>ObsidianTemplate<CR>", desc = "Insert Obsidian Template" },
-    { "<leader>no", mode = "n", "<cmd>ObsidianOpen<CR>", desc = "Open in Obsidian App" },
-    { "<leader>nb", mode = "n", "<cmd>ObsidianBacklinks<CR>", desc = "Show ObsidianBacklinks" },
-    { "<leader>nl", mode = "n", "<cmd>ObsidianLinks<CR>", desc = "Show ObsidianLinks" },
-    { "<leader>nn", mode = "n", "<cmd>ObsidianNew<CR>", desc = "Create New Note" },
-    { "<leader>ns", mode = "n", "<cmd>ObsidianSearch<CR>", desc = "Search Obsidian" },
-    { "<leader>nq", mode = "n", "<cmd>ObsidianQuickSwitch<CR>", desc = "Quick Switch" },
-  } 
+M.obsidianKeys = function()
+	return {
+		{
+			"<leader>na",
+			function()
+				return require("obsidian").util.smart_action()
+			end,
+			mode = { "n" },
+			desc = "[N]ote [A]ction, either follow link or toggle checkbox",
+		},
+		{
+			"<leader>nc",
+			"<cmd>lua require('obsidian').util.toggle_checkbox()<CR>",
+			desc = "Obsidian Check Checkbox",
+			mode = "n",
+		},
+		{ "<leader>nd", mode = "n", "<cmd>ObsidianDailies<CR>", desc = "Obsidian Dailies" },
+		{ "<leader>nt", mode = "n", "<cmd>ObsidianTemplate<CR>", desc = "Insert Obsidian Template" },
+		{ "<leader>no", mode = "n", "<cmd>ObsidianOpen<CR>", desc = "Open in Obsidian App" },
+		{ "<leader>nb", mode = "n", "<cmd>ObsidianBacklinks<CR>", desc = "Show ObsidianBacklinks" },
+		{ "<leader>nl", mode = "n", "<cmd>ObsidianLinks<CR>", desc = "Show ObsidianLinks" },
+		{ "<leader>nn", mode = "n", "<cmd>ObsidianNew<CR>", desc = "Create New Note" },
+		{ "<leader>ns", mode = "n", "<cmd>ObsidianSearch<CR>", desc = "Search Obsidian" },
+		{ "<leader>nq", mode = "n", "<cmd>ObsidianQuickSwitch<CR>", desc = "Quick Switch" },
+	}
 end
 
 return M

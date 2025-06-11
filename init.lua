@@ -22,5 +22,22 @@ require("plugins")
 -- [[ Autocommands ]]
 require("hels.core.autocmd")
 
+-- [[ Git Worktree ]]
+require("hels.core.gitworktree")
+
+-- [[ Post INIT ]]
+require("hels.core.post_init")
+
+
+-- use telescope as the vim.ui.select
+require('telescope').setup {
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {}
+    }
+  }
+}
+require("telescope").load_extension("ui-select")
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

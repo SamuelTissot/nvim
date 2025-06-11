@@ -33,7 +33,7 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = true
 
 -- search and replace
-vim.opt.inccommand="nosplit"
+vim.opt.inccommand = "nosplit"
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = "yes"
@@ -52,8 +52,9 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.opt.tabstop = 4
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -78,5 +79,9 @@ vim.g.db_ui_execute_on_save = 0
 
 -- obsidian
 vim.opt.conceallevel = 2
+
+
+
+
 
 -- vim: ts=2 sts=2 sw=2 et

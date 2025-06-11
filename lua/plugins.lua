@@ -40,6 +40,10 @@ require("lazy").setup({
 	require("hels.plugins.cmp"),
 	require("hels.plugins.go-nvim"), -- golang
 
+  -- AI
+  --
+  require("hels.plugins.copilot"),
+
 	-- TEST
 	--
 	require("hels.plugins.neotest"),
