@@ -62,7 +62,7 @@ require("lazy").setup({
 
 	-- DATABASE
 	-- require 'hels.plugins.dadbod',
-	require("hels.plugins.dbee"),
+	-- require("hels.plugins.dbee"),
 
 	require("hels.plugins.mini"),
 

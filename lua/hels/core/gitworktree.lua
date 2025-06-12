@@ -13,19 +13,11 @@ local Worktree = require("git-worktree")
 --          path = path where worktree deleted
 
 Worktree.on_tree_change(function(op, metadata)
-	if op == Worktree.Operations.Create then
-		-- transfer environments configurations
-		local source = metadata.path .. "/../.wtenv"
-		if vim.fn.isdirectory(source) ~= 0 then
-			print("tranfering wtenv files")
-			-- transfer the file
-			local output = vim.fn.system({ "rsync", "-ru", source .. "/", metadata.path })
-			print(output)
-			-- run sed to set correct directory
-			print("doing path work")
-			output = vim.fn.system(
-				"find " .. metadata.path .. " -type f -exec sed -i 's#{{WT_TARGET_DIR}}#" .. metadata.path .. "#g' {} +"
-			)
+	if op == Worktree.Operations.Switch then
+		local hook = metadata.path .. "/../.gwthook.sh"
+		if vim.fn.executable(hook) ~= 0 then
+			print("triggering git worktree hook")
+			local output = vim.fn.system({ hook, metadata.path })
 			print(output)
 		end
 	end
