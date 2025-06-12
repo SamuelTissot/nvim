@@ -67,9 +67,8 @@ return {
 			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      --
+			--
 			local servers = {
-        lua_ls = {},
 				clangd = {},
 				gopls = {},
 				arduino_language_server = {},
@@ -111,6 +110,9 @@ return {
 					-- capabilities = {},
 					settings = {
 						Lua = {
+							diagnostics = {
+								globals = { "vim" },
+							},
 							completion = {
 								callSnippet = "Replace",
 							},
@@ -122,17 +124,16 @@ return {
 			}
 
 			require("mason-lspconfig").setup({
-        -- ensure installed lsp
-        ensure_installed = {
-          "arduino_language_server",
-          "clangd",
-          "gopls",
-          "htmx",
-          "ltex",
-          "lua_ls",
-          "ts_ls",
-        },
-
+				-- ensure installed lsp
+				ensure_installed = {
+					"arduino_language_server",
+					"clangd",
+					"gopls",
+					"htmx",
+					"ltex",
+					"lua_ls",
+					"ts_ls",
+				},
 
 				handlers = {
 					function(server_name)

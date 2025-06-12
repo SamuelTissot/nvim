@@ -94,7 +94,7 @@ M.toggleTermKeys = function()
 		{
 			"<leader>ot",
 			function()
-				vim.cmd(vim.v.count1 .. "ToggleTerm direction=horizontal")
+				vim.cmd(vim.v.count1 .. "ToggleTerm direction=float")
 			end,
 			{ desc = "[o]perate [t]erminal" },
 		},
